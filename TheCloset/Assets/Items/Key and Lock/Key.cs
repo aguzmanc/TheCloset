@@ -36,8 +36,8 @@ namespace Vg {
             _forcedDrop = false;
 
             if (!_forcedDrop &&
-                (Vector3.Angle(transform.forward, OwnerLock.EnterAngle.forward) > Tresholds.Rotation ||
-                 Vector3.Angle(transform.up, OwnerLock.EnterAngle.up) > 80)) {
+                (Vector3.Angle(transform.forward, OwnerLock.EnterAngle.forward) > 80 ||
+                 Vector3.Angle(transform.up, OwnerLock.EnterAngle.up) > Tresholds.Rotation)) {
                 ForceDrop();
             }
         }
