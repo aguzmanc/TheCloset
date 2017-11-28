@@ -37,8 +37,8 @@ public class Key : MonoBehaviour {
         _forcedDrop = false;
 
         if (!_forcedDrop && (Time.time - _exitTime) > 1 &&
-            (Vector3.Angle(transform.forward, OwnerLock.EnterAngle.forward) > 80 ||
-             Vector3.Angle(transform.up, OwnerLock.EnterAngle.up) > Tresholds.Rotation)) {
+            (Vector3.Angle(transform.forward, _currentLock.EnterAngle.forward) > 80 ||
+             Vector3.Angle(transform.up, _currentLock.EnterAngle.up) > Tresholds.Rotation)) {
             ForceDrop();
         }
     }
@@ -46,9 +46,9 @@ public class Key : MonoBehaviour {
     void OnTriggerStay (Collider c) {
         if (_opGrabber.IsGrabbed()) {
             if (_currentLock != null && OwnerLock != _currentLock) {
-                transform.rotation = OwnerLock.EnterAngle.rotation;
+                transform.rotation = _currentLock.EnterAngle.rotation;
             } else if (!_forcedDrop) {
-                if (Vector3.Angle(transform.up, OwnerLock.UnlockAngle.up) < Tresholds.Rotation) {
+                if (Vector3.Angle(transform.up, _currentLock.UnlockAngle.up) < Tresholds.Rotation) {
                     _currentLock.ReceiveInteraction(this.gameObject);
                 }
 
