@@ -6,8 +6,10 @@ public class Drawer : MonoBehaviour {
     public Knob TheKnob;
 
     void Awake () {
-        TheLock.OnLockChange += Unlock;
-        TheKnob.Blocked = !TheLock.IsOpen;
+        if (TheLock != null) {
+            TheLock.OnLockChange += Unlock;
+            TheKnob.Blocked = !TheLock.IsOpen;
+        }
     }
 
     public void Unlock (bool isOpen, Lock theLock, Key theKey) {
