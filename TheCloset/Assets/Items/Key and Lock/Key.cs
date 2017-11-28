@@ -7,6 +7,7 @@ namespace Vg {
         public bool DebugGrab = false;
 
         public Lock OwnerLock;
+        public float DroppingTreshold = 1;
 
         public delegate void ForcedDropDelegate ();
         public event ForcedDropDelegate OnForcedDrop;
@@ -49,11 +50,34 @@ namespace Vg {
                 if (Vector3.Angle(transform.up, OwnerLock.UnlockAngle.up) < Tresholds.Rotation) {
                     _currentLock.ReceiveInteraction(this.gameObject);
                 }
+
                 Vector3 r = _currentLock.Model.transform.eulerAngles;
                 _currentLock.Model.transform.rotation =
                     transform.rotation =
                     Quaternion.Euler(r.x, r.y, transform.rotation.eulerAngles.z);
+
+                Transform t = _currentLock.Model.transform;
+                transform.position = _currentLock.Model.transform.position + t.forward *
+                    Vector3.Dot((transform.parent.position - t.position), t.forward);
+
+                if (Vector3.Distance(transform.position, transform.parent.position) > DroppingTreshold) {
+                    ForceRegrap();
+                }
             }
+        }
+
+        void OnTriggerExit (Collider c) {
+            ForceRegrap();
+        }
+
+        public void ForceRegrap () {
+            Rigidbody body = gameObject.GetComponent<Rigidbody>();
+            if (body != null) Destroy(body);
+
+            _forcedDrop = false;
+            transform.parent = _grabbable.transform;
+            transform.position = transform.parent.transform.position;
+            transform.rotation = transform.parent.transform.rotation;
         }
 
         public void ForceDrop () {
