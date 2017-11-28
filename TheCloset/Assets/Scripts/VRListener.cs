@@ -4,28 +4,23 @@ using UnityEngine;
 
 public class VRListener : MonoBehaviour 
 {
-	AudioSource _src;
+	public AudioSource TVAudio;
 
 	public float MaxDistance;
 	public float MaxVolume;
 
-	void Start () 
-	{
-		_src = GameObject.FindObjectOfType<AudioSource> ();
-		
-	}
 
 	public float dist;
 	public float p;
 
 	void Update () 
 	{
-		_src.panStereo = -1f * Vector3.Dot (transform.right, Vector3.forward);
+		TVAudio.panStereo = -1f * Vector3.Dot (transform.right, Vector3.forward);
 
-		dist = (transform.position - _src.transform.position).z;
+		dist = (transform.position - TVAudio.transform.position).z;
 
 		float p = 1f - dist / MaxDistance;
 
-		_src.volume = p * MaxVolume;
+		TVAudio.volume = p * MaxVolume;
 	}
 }
