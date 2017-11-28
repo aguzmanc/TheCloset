@@ -49,7 +49,10 @@ namespace Vg {
                 if (Vector3.Angle(transform.up, OwnerLock.UnlockAngle.up) < Tresholds.Rotation) {
                     _currentLock.ReceiveInteraction(this.gameObject);
                 }
-                _currentLock.Model.transform.up = transform.up;
+                Vector3 r = _currentLock.Model.transform.eulerAngles;
+                _currentLock.Model.transform.rotation =
+                    transform.rotation =
+                    Quaternion.Euler(r.x, r.y, transform.rotation.eulerAngles.z);
             }
         }
 
