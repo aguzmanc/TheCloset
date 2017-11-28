@@ -87,8 +87,8 @@ public class Key : MonoBehaviour {
 
         _forcedDrop = false;
         transform.parent = _opGrabber.transform;
-        transform.position = transform.parent.transform.position;
-        transform.rotation = transform.parent.transform.rotation;
+        transform.position = _opGrabber.transform.position;
+        transform.rotation = _opGrabber.transform.rotation;
     }
 
     public void ForceDrop () {
