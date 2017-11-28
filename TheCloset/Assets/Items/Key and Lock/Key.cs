@@ -1,49 +1,50 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Vg {
-    public class Key : MonoBehaviour {
-        public bool DebugMode = false;
-        public bool DebugGrab = false;
+public class Key : MonoBehaviour {
+    public bool DebugMode = false;
+    public bool DebugGrab = false;
 
-        public Lock OwnerLock;
-        public float DroppingTreshold = 1;
+    public Lock OwnerLock;
+    public float DroppingTreshold = 1;
 
-        public delegate void ForcedDropDelegate ();
-        public event ForcedDropDelegate OnForcedDrop;
+    public delegate void ForcedDropDelegate ();
+    public event ForcedDropDelegate OnForcedDrop;
 
-        public bool _forcedDrop = false;
-        public Lock _currentLock;
-        private float _exitTime = 0;
+    public bool _forcedDrop = false;
+    public Lock _currentLock;
+    private float _exitTime = 0;
 
-        private OPGrabber _opGrabber;
+    private OPGrabber _opGrabber;
 
-        void Start () {
-            _opGrabber = transform.parent.GetComponent<OPGrabber>();
-            _opGrabber.Grabbable = _opGrabber.GetComponent<OVRGrabbable>();
-        }
+    void Start () {
+        _opGrabber = transform.parent.GetComponent<OPGrabber>();
+        _opGrabber.Grabbable = _opGrabber.GetComponent<OVRGrabbable>();
+    }
 
-        void Update () {
-            if (!_opGrabber.IsGrabbed()) {
-                if (_forcedDrop) {
-                    ReturnToParent();
-                }
+    void Update () {
+        if (!_opGrabber.IsGrabbed()) {
+            if (_forcedDrop) {
+                ReturnToParent();
             }
         }
+    }
 
-        void OnTriggerEnter (Collider c) {
-            _currentLock = c.GetComponent<Lock>();
-            _opGrabber.StaysOnDrop = true;
-            _forcedDrop = false;
+    void OnTriggerEnter (Collider c) {
+        _currentLock = c.GetComponent<Lock>();
+        _opGrabber.StaysOnDrop = true;
+        _opGrabber.SetDynamicAnchor(_currentLock.transform);
+        _forcedDrop = false;
 
-            if (!_forcedDrop && (Time.time - _exitTime) > 1 &&
-                (Vector3.Angle(transform.forward, OwnerLock.EnterAngle.forward) > 80 ||
-                 Vector3.Angle(transform.up, OwnerLock.EnterAngle.up) > Tresholds.Rotation)) {
-                ForceDrop();
-            }
+        if (!_forcedDrop && (Time.time - _exitTime) > 1 &&
+            (Vector3.Angle(transform.forward, OwnerLock.EnterAngle.forward) > 80 ||
+             Vector3.Angle(transform.up, OwnerLock.EnterAngle.up) > Tresholds.Rotation)) {
+            ForceDrop();
         }
+    }
 
-        void OnTriggerStay (Collider c) {
+    void OnTriggerStay (Collider c) {
+        if (_opGrabber.IsGrabbed()) {
             if (_currentLock != null && OwnerLock != _currentLock) {
                 transform.rotation = OwnerLock.EnterAngle.rotation;
             } else if (!_forcedDrop) {
@@ -65,8 +66,10 @@ namespace Vg {
                 }
             }
         }
+    }
 
-        void OnTriggerExit (Collider c) {
+    void OnTriggerExit (Collider c) {
+        if (_opGrabber.IsGrabbed()) {
             if (!_forcedDrop) {
                 _exitTime = Time.time;
                 ForceRegrap();
@@ -74,34 +77,35 @@ namespace Vg {
 
             _currentLock = null;
             _opGrabber.StaysOnDrop = false;
+            _opGrabber.UnsetDynamicAnchor();
         }
+    }
 
-        public void ForceRegrap () {
-            Rigidbody body = gameObject.GetComponent<Rigidbody>();
-            if (body != null) Destroy(body);
+    public void ForceRegrap () {
+        Rigidbody body = gameObject.GetComponent<Rigidbody>();
+        if (body != null) Destroy(body);
 
-            _forcedDrop = false;
-            transform.parent = _opGrabber.transform;
-            transform.position = transform.parent.transform.position;
-            transform.rotation = transform.parent.transform.rotation;
-        }
+        _forcedDrop = false;
+        transform.parent = _opGrabber.transform;
+        transform.position = transform.parent.transform.position;
+        transform.rotation = transform.parent.transform.rotation;
+    }
 
-        public void ForceDrop () {
-            _forcedDrop = true;
-            transform.parent = null;
-            gameObject.AddComponent(typeof(Rigidbody));
+    public void ForceDrop () {
+        _forcedDrop = true;
+        transform.parent = null;
+        gameObject.AddComponent(typeof(Rigidbody));
 
-            if (OnForcedDrop != null) OnForcedDrop();
-        }
+        if (OnForcedDrop != null) OnForcedDrop();
+    }
 
-        public void ReturnToParent () {
-            _forcedDrop = true;
-            _currentLock = null;
-            _opGrabber.StaysOnDrop = false;
-            Destroy(GetComponent<Rigidbody>());
-            _opGrabber.transform.position = transform.position;
-            _opGrabber.transform.rotation = transform.rotation;
-            transform.parent = _opGrabber.transform;
-        }
+    public void ReturnToParent () {
+        _forcedDrop = true;
+        _currentLock = null;
+        _opGrabber.StaysOnDrop = false;
+        Destroy(GetComponent<Rigidbody>());
+        _opGrabber.transform.position = transform.position;
+        _opGrabber.transform.rotation = transform.rotation;
+        transform.parent = _opGrabber.transform;
     }
 }

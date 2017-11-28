@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa974543cdc09414a91e103a9d765048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsOpen: 1
+  IsOpen: 0
   Model: {fileID: 1689815579156966}
   EnterAngle: {fileID: 4489292513496652}
   UnlockAngle: {fileID: 4595117370424048}
