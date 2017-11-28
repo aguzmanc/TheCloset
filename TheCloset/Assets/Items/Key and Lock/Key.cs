@@ -67,7 +67,9 @@ namespace Vg {
         }
 
         void OnTriggerExit (Collider c) {
-            ForceRegrap();
+            if (!_forcedDrop) {
+                ForceRegrap();
+            }
         }
 
         public void ForceRegrap () {
