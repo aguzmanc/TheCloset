@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 65524674713053852}
   - component: {fileID: 54202636699537352}
   - component: {fileID: 114510118450510976}
+  - component: {fileID: 114864801059530398}
   m_Layer: 0
   m_Name: key grabbable
   m_TagString: Untagged
@@ -453,6 +454,21 @@ MonoBehaviour:
   DroppingTreshold: 3
   _forcedDrop: 0
   _currentLock: {fileID: 0}
+--- !u!114 &114864801059530398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1578979814391734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7351a8672d1dca46871ec8f31664d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugMode: 0
+  DebugGrab: 0
+  StaysOnDrop: 0
+  Grabbable: {fileID: 114510118450510976}
 --- !u!135 &135738097283270930
 SphereCollider:
   m_ObjectHideFlags: 1

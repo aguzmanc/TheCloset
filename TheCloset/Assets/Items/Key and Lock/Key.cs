@@ -14,54 +14,26 @@ namespace Vg {
 
         public bool _forcedDrop = false;
         public Lock _currentLock;
-        private OVRGrabbable _grabbable;
-        private bool _physicsReconfiguredDrop = false;
-        private bool _physicsReconfiguredGrab = false;
-        private Vector3 _anchoredPosition;
         private float _exitTime = 0;
 
+        private OPGrabber _opGrabber;
+
         void Start () {
-            _grabbable = transform.parent.GetComponent<OVRGrabbable>();
+            _opGrabber = transform.parent.GetComponent<OPGrabber>();
+            _opGrabber.Grabbable = _opGrabber.GetComponent<OVRGrabbable>();
         }
 
         void Update () {
-            if (IsGrabbed()) {
-                _physicsReconfiguredDrop = false;
-                if (!_physicsReconfiguredGrab) {
-                    _physicsReconfiguredGrab = true;
-                    Rigidbody body = transform.parent.GetComponent<Rigidbody>();
-                    body.isKinematic = true;
-                    body.useGravity = false;
-                }
-            } else {
-                _physicsReconfiguredGrab = false;
-                transform.parent.position = transform.position;
-                transform.parent.rotation = transform.rotation;
-
-                Rigidbody body = transform.parent.GetComponent<Rigidbody>();
+            if (!_opGrabber.IsGrabbed()) {
                 if (_forcedDrop) {
                     ReturnToParent();
-                } else if (_currentLock != null) {
-                    if (!_physicsReconfiguredDrop) {
-                        _physicsReconfiguredDrop = true;
-                        body.isKinematic = true;
-                        body.useGravity = false;
-                        _anchoredPosition = transform.position;
-                    }
-
-                    transform.parent.position = _anchoredPosition;
-                    transform.parent.rotation = _currentLock.Model.transform.rotation;
-                } else if (!_physicsReconfiguredDrop){
-                    _physicsReconfiguredDrop = true;
-                    body.isKinematic = false;
-                    body.useGravity = true;
                 }
-
             }
         }
 
         void OnTriggerEnter (Collider c) {
             _currentLock = c.GetComponent<Lock>();
+            _opGrabber.StaysOnDrop = true;
             _forcedDrop = false;
 
             if (!_forcedDrop && (Time.time - _exitTime) > 1 &&
@@ -99,6 +71,9 @@ namespace Vg {
                 _exitTime = Time.time;
                 ForceRegrap();
             }
+
+            _currentLock = null;
+            _opGrabber.StaysOnDrop = false;
         }
 
         public void ForceRegrap () {
@@ -106,7 +81,7 @@ namespace Vg {
             if (body != null) Destroy(body);
 
             _forcedDrop = false;
-            transform.parent = _grabbable.transform;
+            transform.parent = _opGrabber.transform;
             transform.position = transform.parent.transform.position;
             transform.rotation = transform.parent.transform.rotation;
         }
@@ -122,14 +97,11 @@ namespace Vg {
         public void ReturnToParent () {
             _forcedDrop = true;
             _currentLock = null;
+            _opGrabber.StaysOnDrop = false;
             Destroy(GetComponent<Rigidbody>());
-            _grabbable.transform.position = transform.position;
-            _grabbable.transform.rotation = transform.rotation;
-            transform.parent = _grabbable.transform;
-        }
-
-        public bool IsGrabbed () {
-            return (_grabbable.enabled == true && _grabbable.isGrabbed) || (DebugMode && DebugGrab);
+            _opGrabber.transform.position = transform.position;
+            _opGrabber.transform.rotation = transform.rotation;
+            transform.parent = _opGrabber.transform;
         }
     }
 }
