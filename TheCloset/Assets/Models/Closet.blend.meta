@@ -31,6 +31,9 @@ ModelImporter:
     100046: Box03
     100048: WallsExterior
     100050: Outside
+    100052: Door_A
+    100054: Door_B
+    100056: Door_C
     400000: Boxes
     400002: //RootNode
     400004: Door
@@ -57,6 +60,9 @@ ModelImporter:
     400046: Box03
     400048: WallsExterior
     400050: Outside
+    400052: Door_A
+    400054: Door_B
+    400056: Door_C
     2300000: Boxes
     2300002: Door
     2300004: Door_Grid
@@ -82,6 +88,9 @@ ModelImporter:
     2300044: Box03
     2300046: WallsExterior
     2300048: Outside
+    2300050: Door_A
+    2300052: Door_B
+    2300054: Door_C
     3300000: Boxes
     3300002: Door
     3300004: Door_Grid
@@ -107,6 +116,9 @@ ModelImporter:
     3300044: Box03
     3300046: WallsExterior
     3300048: Outside
+    3300050: Door_A
+    3300052: Door_B
+    3300054: Door_C
     4300000: Door_Grid
     4300002: Door
     4300004: Hang_Pole_002
@@ -132,6 +144,9 @@ ModelImporter:
     4300044: Box01
     4300046: WallsExterior
     4300048: Outside
+    4300050: Door_B
+    4300052: Door_A
+    4300054: Door_C
     7400000: Default Take
     9500000: //RootNode
   materials:
