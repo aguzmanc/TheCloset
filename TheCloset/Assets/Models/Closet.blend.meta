@@ -34,6 +34,10 @@ ModelImporter:
     100052: Door_A
     100054: Door_B
     100056: Door_C
+    100058: MainLock
+    100060: MainLock_Keyhole
+    100062: Plane_000
+    100064: Plane_001
     400000: Boxes
     400002: //RootNode
     400004: Door
@@ -63,6 +67,10 @@ ModelImporter:
     400052: Door_A
     400054: Door_B
     400056: Door_C
+    400058: MainLock
+    400060: MainLock_Keyhole
+    400062: Plane_000
+    400064: Plane_001
     2300000: Boxes
     2300002: Door
     2300004: Door_Grid
@@ -91,6 +99,10 @@ ModelImporter:
     2300050: Door_A
     2300052: Door_B
     2300054: Door_C
+    2300056: MainLock
+    2300058: MainLock_Keyhole
+    2300060: Plane_000
+    2300062: Plane_001
     3300000: Boxes
     3300002: Door
     3300004: Door_Grid
@@ -119,6 +131,10 @@ ModelImporter:
     3300050: Door_A
     3300052: Door_B
     3300054: Door_C
+    3300056: MainLock
+    3300058: MainLock_Keyhole
+    3300060: Plane_000
+    3300062: Plane_001
     4300000: Door_Grid
     4300002: Door
     4300004: Hang_Pole_002
@@ -147,6 +163,10 @@ ModelImporter:
     4300050: Door_B
     4300052: Door_A
     4300054: Door_C
+    4300056: Plane_000
+    4300058: MainLock_Keyhole
+    4300060: MainLock
+    4300062: Plane_001
     7400000: Default Take
     9500000: //RootNode
   materials:

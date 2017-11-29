@@ -37,6 +37,7 @@ sysinfo.txt
 Standard Assets.meta
 
 *.blend1
+*.blend1.meta
 Cinematheque/Assets/Libraries/ZFBrowser/Plugins/m64/
 Cinematheque/Assets/Libraries/ZFBrowser/Plugins/m64.meta
 Cinematheque/Assets/Libraries/ZFBrowser/Plugins/w32.meta
